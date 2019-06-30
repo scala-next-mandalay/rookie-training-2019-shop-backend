@@ -16,11 +16,4 @@ class CategoriesController extends Controller
             Category::orderBy('id')->get()
         );
     }
-    
-    public function store(StoreCategoryRequest $request): JsonResource
-    {
-        return new JsonResource(
-            Category::create($request->validated())
-        );
-    }
 }

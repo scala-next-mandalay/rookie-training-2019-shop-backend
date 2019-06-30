@@ -19,11 +19,4 @@ class ItemsController extends Controller
             ->get()
         );
     }
-
-    public function store(StoreItemRequest $request)
-    {
-        return new JsonResource(
-            Item::create($request->validated())
-        );
-    }
 }
