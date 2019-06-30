@@ -31,25 +31,3 @@ $ php artisan migrate --seed --env=testing
 
 $ ./vendor/bin/phpunit
 ```
-
-
-## Basics of Laravel for the API
-```
-$ php artisan make:controller CategoriesController
-$ php artisan make:model Models/Category
-$ php artisan make:request Category/StoreCategoryRequest
-$ php artisan make:factory CategoryFactory
-$ php artisan make:migration create_categories_table
-
-$ php artisan make:controller ItemsController
-$ php artisan make:model Models/Item
-$ php artisan make:request Item/StoreItemRequest
-$ php artisan make:request Item/IndexItemsRequest
-$ php artisan make:factory ItemFactory
-$ php artisan make:migration create_items_table
-
-$ vi database/seeds/DatabaseSeeder.php
-```
-Files can be created without using the artisan command. 
-However, I recommend creating a file with the artisan command. 
-Because, using the artisan command allows even beginners to do responsibility division of MVC.
