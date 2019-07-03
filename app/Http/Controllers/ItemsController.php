@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Item;
@@ -13,10 +14,16 @@ class ItemsController extends Controller
     public function index(IndexItemsRequest $request): ResourceCollection
     {
         return JsonResource::collection(
-            Item::with('category')->orderBy('id')
+            Item::orderBy('id','desc')
+            ->with('category')->orderBy('id')
             ->limit(config('const.ITEM_LIMIT'))
             ->offset($request->offset)
-            ->get()
+            ->get()  
+
+            //           
         );
     }
+
+    
+   
 }
