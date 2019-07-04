@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Category;
 
 class CategoryTest extends TestCase
 {
@@ -21,47 +22,13 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function categories_are_order_by_id_asc()
-   {
-       factory(Category::class)->create(['id' => 1250]);
-       factory(Category::class)->create(['id' => 8]);
-       factory(Category::class)->create(['id' => 35]);
-       $res = $this->json('GET', '/api/categories');
-       $res->assertStatus(200);
-       $res->assertJsonCount(3, 'data');
-       $res->assertJson([
-           'data' => [
-               ['id' => 8],
-               ['id' => 35],
-               ['id' => 1250],
-           ]
-       ]);
-   }
-
-   public function deleted_categories_are_not_shown()
-   {
-       $row1 = factory(Category::class)->create();
-       $row2 = factory(Category::class)->create();
-       $row2->delete();
-       $row3 = factory(Category::class)->create();
-
-
-       $res = $this->json('GET', '/api/categories');
-       $res->assertStatus(200);
-       $res->assertJsonCount(2, 'data');
-       $res->assertJson([
-           'data' => [
-               ['id' => $row1->id],
-               ['id' => $row3->id],
-           ]
-       ]);
-   }
-
-   public function on_index_categories_success()
-    {
-        $exps = factory(Category::class, 2)->create();
- 
+    /** @test */
+    public function index_categories_success()
+     {
+        
+        $exps = factory(Category::class, 2)->create(); 
         $res = $this->json('GET', '/api/categories'); 
+        echo "Index Categories ......";
         $res->assertStatus(200); 
         $res->assertExactJson([
             'data' => [
@@ -79,7 +46,48 @@ class CategoryTest extends TestCase
                     'updated_at' => $this->toMySqlDateFromJson($exps[1]->created_at),
                     'deleted_at' => null,
                 ]
-            ]
-        ]);
+             ]
+          ]);
+      }
+
+    /** @test */
+    public function categories_are_order_by_id_asc()
+    {
+       
+           factory(Category::class)->create(['id' => 1250]);
+           factory(Category::class)->create(['id' => 8]);
+           factory(Category::class)->create(['id' => 35]);
+            echo " Categories are Order.... ";
+           $res = $this->json('GET','/api/categories');
+           $res->assertStatus(200);
+           $res->assertJsonCount(3,'data');
+           $res->assertJson([
+               'data' => [
+                   ['id' => 8],
+                   ['id' => 35],
+                   ['id' => 1250],
+               ]
+           ]);
     }
+
+   /** @test */
+   public function deleted_categories_are_not_shown()
+   {
+            
+           $row1 = factory(Category::class)->create();
+           $row2 = factory(Category::class)->create();
+           $row2->delete();
+           echo "Deleted  Categories .....";
+           $row3 = factory(Category::class)->create();
+           $res = $this->json('GET','/api/categories');
+           $res->assertStatus(200);
+           $res->assertJsonCount(2,'data');
+           $res->assertJson([
+               'data' => [
+                   ['id' => $row1->id],
+                   ['id' => $row3->id],
+               ]
+           ]);
+   }
+
 }
