@@ -18,9 +18,7 @@ class ItemsController extends Controller
             ->with('category')->orderBy('id')
             ->limit(config('const.ITEM_LIMIT'))
             ->offset($request->offset)
-            ->get()  
-
-            //           
+            ->get()                      
         );
     }
 
