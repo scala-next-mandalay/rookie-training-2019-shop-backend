@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Order;
 use App\Models\Orderitem;
 use App\Http\Requests\Order\StoreOrderRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrdersController extends Controller
 {
@@ -49,8 +51,15 @@ class OrdersController extends Controller
             }            
 
             return new JsonResource($orderModel);
-
+            return new JsonResource($dump[]); 
         });
 
+    }
+
+    
+     public function index(): ResourceCollection
+    {
+        $orderitem = Orderitem::with('id')->get();
+        return Order::collection($orderitem);
     }
 }

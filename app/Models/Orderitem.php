@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Order;
+use App\Models\Orderitem;
 
 class Orderitem extends Model
 {
@@ -13,4 +15,9 @@ class Orderitem extends Model
         'quantity',
 
     ];
+
+    public function orders()
+    {
+    	$this->belongsTo(Order::class);
+    }
 }

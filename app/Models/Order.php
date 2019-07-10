@@ -4,6 +4,8 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Order;
+use App\Models\Orderitem;
 
 class Order extends Model
 {
