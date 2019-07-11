@@ -43,6 +43,7 @@ class OrderTest extends TestCase
     public function on_store_order_success()
     {
          $item = factory(Item::class)->create();
+         $order=factory(Order::class)->create();
          $res = $this->json('POST', self::API_PATH, [  
 
 
@@ -54,6 +55,7 @@ class OrderTest extends TestCase
             'country'=>'myanmar',
             'state'=>'sagaing',
             'city'=>'mandalay',
+            'order_id'=>[$order->id],
             'item_id_array'=>[$item->id],
             'item_qty_array'=>[3],
             'item_price_array'=>[999]
@@ -62,7 +64,7 @@ class OrderTest extends TestCase
         ]);
 
         $res->assertStatus(201);
-        $res->assertJsonCount(11, 'data');
+        $res->assertJsonCount(12, 'data');
         $res->assertJsonStructure([
             'data' => [
                 'id',

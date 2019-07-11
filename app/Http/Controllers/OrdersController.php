@@ -32,7 +32,7 @@ class OrdersController extends Controller
 
             $orderModel = Order::create($orderArr);
 
-            
+            $orderjson=[];
 
             //insert orderitems
 
@@ -46,20 +46,15 @@ class OrdersController extends Controller
 
                 ];
 
-                $dump[] = Orderitem::create($itemArr);
+                $orderjson = Orderitem::create($itemArr);
 
             }            
 
-            return new JsonResource($orderModel);
-            return new JsonResource($dump[]); 
+            $orderModel->Orderitem=$orderjson;
+            return new JsonResource($orderModel); 
         });
 
     }
 
     
-     public function index(): ResourceCollection
-    {
-        $orderitem = Orderitem::with('id')->get();
-        return Order::collection($orderitem);
-    }
-}
+   }
