@@ -39,13 +39,13 @@ class OrderTest extends TestCase
     //===
 
      /** @test */
-
     public function on_store_order_success()
     {
-         $item = factory(Item::class)->create();
+         $item1 = factory(Item::class)->create();
+         $item2 = factory(Item::class)->create();
+         $item3 = factory(Item::class)->create();
          $order=factory(Order::class)->create();
-         $res = $this->json('POST', self::API_PATH, [  
-
+         $res = $this->json('POST', self::API_PATH, [ 
 
             'total_price'=>100,
             'first_name'=>'kay',
@@ -56,9 +56,9 @@ class OrderTest extends TestCase
             'state'=>'sagaing',
             'city'=>'mandalay',
             'order_id'=>[$order->id],
-            'item_id_array'=>[$item->id],
-            'item_qty_array'=>[3],
-            'item_price_array'=>[999]
+            'item_id_array'=>[$item1->id,$item2->id,$item3->id],
+            'item_qty_array'=>[3,2,5],
+            'item_price_array'=>[50,20,30]
 
 
         ]);
@@ -76,7 +76,7 @@ class OrderTest extends TestCase
                 'country',
                  'state',
                  'city',
-                 'created_at',
+                'created_at',
                 'updated_at'
             ]
 
@@ -91,6 +91,10 @@ class OrderTest extends TestCase
         $this->assertEquals('myanmar',$json['data']['country']);//7
         $this->assertEquals('sagaing',$json['data']['state']);//8
         $this->assertEquals('mandalay',$json['data']['city']);//9 
+        // $this->assertEquals($order->id, $json['data']['order_id']);//2
+        // $this->assertEquals($item->id, $json['data']['item_id']);//3
+        // $this->assertEquals(999, $json['data']['unit_price']);//4
+        // $this->assertEquals(3, $json['data']['quantity']);
         $this->assertLessThan(2, time() - strtotime($json['data']['created_at']));//1
         $this->assertLessThan(2, time() - strtotime($json['data']['updated_at']));//2
 

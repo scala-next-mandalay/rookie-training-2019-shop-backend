@@ -12,49 +12,32 @@ use Illuminate\Http\Response;
 
 class OrdersController extends Controller
 {
-    public function store(StoreOrderRequest $request)
 
-    {
+  public function store(StoreOrderRequest $request)
+  {
+      return \DB::transaction(function() use($request){
+          $data=$request->validated();
 
-        return \DB::transaction(function() use($request) {
+          $orderKeys=['total_price','first_name','last_name','address1','address2','country','state','city'];
+          $orderArr=[];
+          foreach ($orderKeys as $key) {
+              $orderArr[$key]=$data[$key];
+          }
+          $orderModel=Order::create($orderArr);
+          $dump=[];
+          foreach ($data['item_id_array'] as $i => $itemId) {
+              $itemArr=[
+                      'order_id' => $orderModel->id,
+                   'item_id' => $itemId,
+                   'unit_price' => $data['item_price_array'][$i],
+                   'quantity' => $data['item_qty_array'][$i]
+              ];
+              $dump[]=Orderitem::create($itemArr);
+          }
+          $orderModel->Orderitem=$dump;
+          return new JsonResource($orderModel);
+      });
+  }
 
-            $data = $request->validated();           
-
-            //insert order
-
-            $orderKeys = ['total_price', 'first_name', 'last_name', 'address1', 'address2', 'country', 'state', 'city'];
-
-            $orderArr = [];
-            
-            foreach ($orderKeys as $key) {
-                $orderArr[$key] = $data[$key];
-            }
-
-            $orderModel = Order::create($orderArr);
-
-            $orderjson=[];
-
-            //insert orderitems
-
-            foreach ($data['item_id_array'] as $i => $itemId) {
-
-                $itemArr = [
-                    'order_id' => $orderModel->id,
-                    'item_id' => $itemId,
-                    'unit_price' => $data['item_price_array'][$i],
-                    'quantity' => $data['item_qty_array'][$i]
-
-                ];
-
-                $orderjson = Orderitem::create($itemArr);
-
-            }            
-
-            $orderModel->Orderitem=$orderjson;
-            return new JsonResource($orderModel); 
-        });
-
-    }
-
-    
-   }
+  
+}
