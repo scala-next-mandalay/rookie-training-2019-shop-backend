@@ -87,7 +87,7 @@ class ItemTest extends TestCase
         factory(Item::class)->create(['id' => 8]);
         factory(Item::class)->create(['id' => 35]);
         factory(Item::class)->create(['id' => 1250]);
-        $res = $this->json('GET', '/api/items/'); 
+        $res = $this->json('GET', self::API_PATH); 
         $res->assertStatus(200);
         $res->assertJsonCount(3, 'data');
         $res->assertJson([
@@ -109,7 +109,7 @@ class ItemTest extends TestCase
         $row3 = factory(Item::class)->create();
        
         
-        $res = $this->json('GET','/api/items/'); 
+        $res = $this->json('GET',self::API_PATH); 
         $res->assertStatus(200);
         $res->assertJsonCount(2, 'data');
         $res->assertJson([
