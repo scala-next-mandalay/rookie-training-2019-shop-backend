@@ -19,12 +19,16 @@ class OrdersController extends Controller
           $data=$request->validated();
 
           $orderKeys=['total_price','first_name','last_name','address1','address2','country','state','city'];
+
           $orderArr=[];
+          
           foreach ($orderKeys as $key) {
               $orderArr[$key]=$data[$key];
           }
+
           $orderModel=Order::create($orderArr);
           $dump=[];
+
           foreach ($data['item_id_array'] as $i => $itemId) {
               $itemArr=[
                       'order_id' => $orderModel->id,
@@ -32,8 +36,10 @@ class OrdersController extends Controller
                    'unit_price' => $data['item_price_array'][$i],
                    'quantity' => $data['item_qty_array'][$i]
               ];
+
               $dump[]=Orderitem::create($itemArr);
           }
+
           $orderModel->Orderitem=$dump;
           return new JsonResource($orderModel);
       });
