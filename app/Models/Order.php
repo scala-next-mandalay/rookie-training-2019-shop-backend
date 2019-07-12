@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\Orderitem;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -23,7 +22,7 @@ class Order extends Model
 
     ];    
 
-    public function orderitems():HasMany
+    public function orderitems(): HasMany
     {
 		return $this->hasMany(Orderitem::class);
     }
