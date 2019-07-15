@@ -308,13 +308,11 @@ class OrderTest extends TestCase
     //For LastName
 
     /** @test */
-    public function store_lastname_length_0_will_occur_validation_error()
+    public function store_lastname_length_0_will_no_validation_error()
     {
         $item = factory(Item::class)->create();
-        $this->expectException(ValidationException::class);
         $res = $this->json('POST', self::API_PATH, [
             
-
             'total_price'=>100,
             'first_name'=>'kay',
             'last_name'=>'',
@@ -328,6 +326,7 @@ class OrderTest extends TestCase
             'item_price_array'=>[999]
 
         ]);
+        $res->assertStatus(201); 
     }
 
     /** @test */
@@ -516,12 +515,10 @@ class OrderTest extends TestCase
     //For Address2
 
     /** @test */
-    public function store_address2_length_0_will_occur_validation_error()
+    public function store_address2_length_0_will_no_validation_error()
     {
         $item = factory(Item::class)->create();
-        $this->expectException(ValidationException::class);
-        $res = $this->json('POST', self::API_PATH, [            
-
+        $res = $this->json('POST', self::API_PATH, [
             'total_price'=>100,
             'first_name'=>'kay',
             'last_name'=>'aung',
@@ -535,6 +532,7 @@ class OrderTest extends TestCase
             'item_price_array'=>[999]
 
         ]);
+        $res->assertStatus(201); 
 
     }
 
@@ -719,12 +717,10 @@ class OrderTest extends TestCase
     //For State
 
     /** @test */
-    public function store_state_length_0_will_occur_validation_error()
+    public function store_state_length_0_will_no_validation_error()
     {
         $item = factory(Item::class)->create();
-        $this->expectException(ValidationException::class);
         $res = $this->json('POST', self::API_PATH, [
-            
             'total_price'=>100,
             'first_name'=>'kay',
             'last_name'=>'aung',
@@ -738,6 +734,7 @@ class OrderTest extends TestCase
             'item_price_array'=>[999]
 
         ]);
+        $res->assertStatus(201); 
 
     }
 
