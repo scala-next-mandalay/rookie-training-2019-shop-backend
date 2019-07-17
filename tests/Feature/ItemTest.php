@@ -290,16 +290,17 @@ class ItemTest extends TestCase
     }    
 
      /** @test */
-    public function store_image_length_0_will_occur_validation_error()
+    public function store_image_length_0_will_no_validation_error()
     {
         $category =  factory(Category::class)->create();
-        $this->expectException(ValidationException::class);
+        // $this->expectException(ValidationException::class);
         $res = $this->json('POST', self::API_PATH, [
             'name' => 'item1',
             'price' => 999,
             'image' => '',
             'category_id' => $category->id
         ]);
+         $res->assertStatus(201);
     } 
 
     /** @test */
