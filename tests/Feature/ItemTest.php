@@ -289,19 +289,19 @@ class ItemTest extends TestCase
         $this->assertEquals(255, strlen($json['data']['name']));
     }    
 
-    /** @test */
+     /** @test */
     public function store_image_length_0_will_no_validation_error()
     {
-        $category =  factory(Category::class)->create();        
+        $category =  factory(Category::class)->create();
+        // $this->expectException(ValidationException::class);
         $res = $this->json('POST', self::API_PATH, [
             'name' => 'item1',
             'price' => 999,
             'image' => '',
             'category_id' => $category->id
         ]);
-        $res->assertStatus(201); 
-
-    }    
+         $res->assertStatus(201);
+    } 
 
     /** @test */
     public function store_image_length_1_will_no_validation_error()
