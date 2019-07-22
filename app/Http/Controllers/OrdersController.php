@@ -45,5 +45,14 @@ class OrdersController extends Controller
       });
   }
 
+  public function index()
+  {    
+    $order=Order::with('orderitems')->get();
+    return JsonResource::collection($order);
+  }
+
+  
+
+
   
 }

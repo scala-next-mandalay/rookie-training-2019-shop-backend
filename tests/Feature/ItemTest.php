@@ -13,7 +13,7 @@ use Illuminate\Database\QueryException;
 
 class ItemTest extends TestCase
 {
-     use RefreshDatabase;
+     //use RefreshDatabase;
 
      const API_PATH = '/api/items';
 
@@ -42,7 +42,8 @@ class ItemTest extends TestCase
         $exps = factory(Item::class, 2)->create(['category_id' => $category->id]);
         echo "Item index .....";
         $now = time();
-        $res = $this->json('GET', '/api/items?offset=0'); 
+        $res = $this->json('GET', '/api/items?offset=0');
+
         $res->assertStatus(200); 
         $res->assertExactJson([
             'data' => [

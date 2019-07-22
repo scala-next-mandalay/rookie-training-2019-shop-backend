@@ -28,7 +28,7 @@ Route::group([], function () {
 
     Route::apiResource('categories', 'CategoriesController')->only(['index','store']);
     Route::apiResource('items', 'ItemsController')->only(['index','store']);
-    Route::apiResource('orders', 'OrdersController')->only(['store']);
+    Route::apiResource('orders', 'OrdersController')->only(['store','index','destroy']);
 
 
 
