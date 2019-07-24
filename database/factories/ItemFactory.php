@@ -13,7 +13,7 @@ $factory->define(Item::class, function (Faker $faker) {
         'name' => $word,
         'price' => $faker->numberBetween($min = 100, $max = 100000),
         'image' => $word.'.png',
-        'category_id' => factory(Category::class)->create()->id
+      	'category_id' => factory(Category::class)->create()->id
     ];
 });
 

@@ -9,12 +9,15 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\Order\IndexOrderRequest;
+use App\Http\Requests\OrderItem\IndexOrderItemRequest;
+
 
 class OrdersController extends Controller
 {
 
-  public function store(StoreOrderRequest $request)
-  {
+    public function store(StoreOrderRequest $request)
+    {
       return \DB::transaction(function() use($request){
           $data=$request->validated();
 
@@ -43,16 +46,37 @@ class OrdersController extends Controller
           $orderModel->Orderitem=$dump;
           return new JsonResource($orderModel);
       });
-  }
+    }
 
-  public function index()
-  {    
-    $order=Order::with('orderitems')->get();
-    return JsonResource::collection($order);
-  }
-
-  
+    public function index(IndexOrderRequest $request,IndexOrderItemRequest $req):JsonResource
+    {    
+   
+        var_dump($request->begin_date);
+        var_dump($request->end_date);      
 
 
-  
+        //$builder = Order::orderBy('id','desc');
+        $builder = Order::query();
+        $builder->orderBy('id','desc');
+
+        if ($request->begin_date) {
+          $builder->where('created_at','>=',$request->begin_date);
+        }
+        if ($request->end_date) {
+          $builder->where('created_at','<=',$request->end_date);
+        }
+        if($req->order_id) {
+          $builder->where('id','=',$req->order_id);
+        }
+        if($request->begin_date&&$request->end_date)
+        {
+          $builder->where('created_at','>=',$request->begin_date)
+                  ->where('created_at','<=',$request->end_date);
+        }    
+
+        return JsonResource::collection($builder->get()); 
+       
+    }           
+        
+
 }
