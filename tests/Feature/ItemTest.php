@@ -54,13 +54,13 @@ class ItemTest extends TestCase
                     'image' => $exps[0]->image,
                     'category_id' => $category->id,
                     'deleted_at' => NULL,
-                    'created_at' => $this->toMySqlDateFromJson($exps[0]->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($exps[0]->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($exps[0]->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($exps[0]->updated_at),
                     'category' => [
                         'id' => $category->id,
                         'name' => $category->name,
-                        'created_at' => $this->toMySqlDateFromJson($category->updated_at),
-                        'updated_at' => $this->toMySqlDateFromJson($category->created_at),
+                        'created_at' => $this->toMySqlDateFromJson($category->created_at),
+                        'updated_at' => $this->toMySqlDateFromJson($category->updated_at),
                         'deleted_at' => null,
                     ]
                 ],
@@ -76,8 +76,8 @@ class ItemTest extends TestCase
                     'category' => [
                         'id' => $category->id,
                         'name' => $category->name,
-                        'created_at' => $this->toMySqlDateFromJson($category->updated_at),
-                        'updated_at' => $this->toMySqlDateFromJson($category->created_at),
+                        'created_at' => $this->toMySqlDateFromJson($category->created_at),
+                        'updated_at' => $this->toMySqlDateFromJson($category->updated_at),
                         'deleted_at' => null,
                     ]
                 ],
