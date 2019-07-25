@@ -15,14 +15,12 @@ class OrderItemController extends Controller
 
     public function index(IndexOrderItemRequest $request)
     {	
-          $orderitem=Orderitem::
-          	join('orders','orders.id','=','orderitems.order_id')
-            ->join('items','items.id','=','orderitems.item_id')
-            ->select('orders.*','items.*','orderitems.*')
+         $orderitem=Orderitem::
+            join('items','items.id','=','orderitems.item_id')
+            ->select('orderitems.*','items.name')
             ->where('orderitems.order_id','=',$request->order_id)
-            ->get();    
-
-           return JsonResource::collection($orderitem);
+            ->get();
+            return JsonResource::collection($orderitem);
     }   	 
 
         

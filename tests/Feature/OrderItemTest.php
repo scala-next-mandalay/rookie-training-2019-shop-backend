@@ -27,80 +27,38 @@ class OrderItemTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-    }    
+    }   
 
-    /** @test */
-    public function orderitems_index_show()
+
+    /** @test */ 
+    public function nothing_return_no_orderId()
     {
-        $order=factory(Order::class)->create();       
-        $category=factory(Category::class)->create();
-         $item=factory(Item::class)->create(['category_id'=>$category->id]);
-        $exps = factory(Orderitem::class, 2)->create(['order_id'=>$order->id,'item_id'=>$item->id]);
-
-       $res = $this->json('GET','/api/orderitems?order_id=1');
-        $res->assertStatus(200); 
-        $res->assertExactJson([
-            'data' => [
-                [
-                    'id'=>$order->id,
-                    'total_price'=>$order->total_price,
-                    'first_name'=>$order->first_name,
-                    'last_name'=>$order->last_name,
-                    'address1'=>$order->address1,
-                    'address2'=>$order->address2,
-                    'country'=>$order->country,
-                    'state'=>$order->state,
-                    'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'price' => $item->price,
-                    'image' => $item->image,
-                    'category_id' =>$category->id,
-                    'deleted_at' => NULL,
-                    'created_at' => $this->toMySqlDateFromJson($item->created_at),
-                    'updated_at' => $this->toMySqlDateFromJson($item->updated_at),    
-                    'id' => $exps[0]->id,
-                    'order_id'=>$order->id,                    
-                    'item_id'=>$item->id,                   
-                    'unit_price'=>$exps[0]->unit_price,
-                    'quantity'=>$exps[0]->quantity,
-                    'created_at' => $this->toMySqlDateFromJson($exps[0]->created_at), 
-                    'updated_at' => $this->toMySqlDateFromJson($exps[0]->updated_at),                                        
-                ],
-                [
-                     'id'=>$order->id,
-                    'total_price'=>$order->total_price,
-                    'first_name'=>$order->first_name,
-                    'last_name'=>$order->last_name,
-                    'address1'=>$order->address1,
-                    'address2'=>$order->address2,
-                    'country'=>$order->country,
-                    'state'=>$order->state,
-                    'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'price' => $item->price,
-                    'image' => $item->image,
-                    'category_id' =>$category->id,
-                    'deleted_at' => NULL,
-                    'created_at' => $this->toMySqlDateFromJson($item->created_at),
-                    'updated_at' => $this->toMySqlDateFromJson($item->updated_at),    
-                    'id' => $exps[1]->id,
-                    'order_id'=>$order->id,                    
-                    'item_id'=>$item->id,                   
-                    'unit_price'=>$exps[1]->unit_price,
-                    'quantity'=>$exps[1]->quantity,
-                    'created_at' => $this->toMySqlDateFromJson($exps[1]->created_at), 
-                    'updated_at' => $this->toMySqlDateFromJson($exps[1]->updated_at),                
-                ]
-            ]
-        ]);
+        $orderitem =  factory(Orderitem::class)->create();
+        $res = $this->json('GET', self::API_PATH); 
+        $res->assertStatus(200);
+        $res->assertJsonCount(0, 'data');
     }
 
-    
+    /** @test */
+    public function get_orderitems_with_orderId()
+    {
+         $order=factory(Order::class)->create(['id'=>'100']);
+         $orderid1 =  factory(Orderitem::class)->create();
+         $orderid2 =  factory(Orderitem::class)->create(['order_id'=>$order->id]);
+         $orderid3 =  factory(Orderitem::class)->create();
+
+        $res = $this->json('GET', '/api/orderitems?order_id='.$order->id); 
+        $res->assertStatus(200);
+        $res->assertJsonCount(1, 'data');
+        $res->assertJson([
+            'data' => [
+                ['id' =>$orderid2->id,
+                    'order_id'=>$orderid2->order_id
+                ],
+                
+            ]
+        ]);
+
+    }   
 
 }
