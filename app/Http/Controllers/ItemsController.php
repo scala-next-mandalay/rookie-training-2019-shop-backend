@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\Category;
 use App\Http\Requests\Item\StoreItemRequest;
 use App\Http\Requests\Item\IndexItemsRequest;
+use App\Http\Requests\OrderItem\IndexOrderItemRequest;
 
 class ItemsController extends Controller
 {

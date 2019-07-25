@@ -42,7 +42,8 @@ class ItemTest extends TestCase
         $exps = factory(Item::class, 2)->create(['category_id' => $category->id]);
         echo "Item index .....";
         $now = time();
-        $res = $this->json('GET', '/api/items?offset=0'); 
+        $res = $this->json('GET', '/api/items?offset=0');
+
         $res->assertStatus(200); 
         $res->assertExactJson([
             'data' => [
@@ -148,6 +149,29 @@ class ItemTest extends TestCase
                ]
            ]);
      }
+
+     /** @test */
+
+    public function get_11th_to_15th_items_if_limit10_offset10_totalSize15()
+    {
+        //echo "This..............................................";
+
+        $category =  factory(Category::class)->create();
+        $exps = factory(Item::class, 15)->create(['category_id' => $category->id]);        
+
+        $res = $this->json('GET', '/api/items?offset=10'); 
+        $res->assertJsonCount(5, 'data');
+        $res->assertJson([
+            'data' => [
+                ['id' => $exps[4]->id],//11th
+                ['id' => $exps[3]->id],
+                ['id' => $exps[2]->id],
+                ['id' => $exps[1]->id],
+                ['id' => $exps[0]->id],//15th
+            ]
+
+        ]);
+    }
 
      /** @test */
     public function get_no_items_if_limit10_offset10_totalSize3()
