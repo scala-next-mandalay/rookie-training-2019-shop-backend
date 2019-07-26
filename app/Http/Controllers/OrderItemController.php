@@ -21,8 +21,6 @@ class OrderItemController extends Controller
             ->where('orderitems.order_id','=',$request->order_id)
             ->get();
             return JsonResource::collection($orderitem);
-    }   	 
-
-        
+    }          
     
 }
