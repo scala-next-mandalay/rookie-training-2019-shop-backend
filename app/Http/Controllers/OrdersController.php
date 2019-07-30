@@ -18,7 +18,7 @@ class OrdersController extends Controller
 
     public function store(StoreOrderRequest $request)
     {
-      return \DB::transaction(function() use($request){
+          return \DB::transaction(function() use($request){
           $data=$request->validated();
 
           $orderKeys=['total_price','first_name','last_name','address1','address2','country','state','city'];
@@ -49,30 +49,19 @@ class OrdersController extends Controller
     }
 
     public function index(IndexOrderRequest $request,IndexOrderItemRequest $req):JsonResource
-    {    
-   
-        var_dump($request->begin_date);
-        var_dump($request->end_date);      
-
-
-        //$builder = Order::orderBy('id','desc');
-        $builder = Order::query();
-        $builder->orderBy('id','desc');
+    {          
+        $builder = Order::query();                    
+        $builder->orderBy('id','desc');       
 
         if ($request->begin_date) {
           $builder->where('created_at','>=',$request->begin_date);
         }
         if ($request->end_date) {
           $builder->where('created_at','<=',$request->end_date);
-        }
+        }          
         if($req->order_id) {
           $builder->where('id','=',$req->order_id);
-        }
-        if($request->begin_date&&$request->end_date)
-        {
-          $builder->where('created_at','>=',$request->begin_date)
-                  ->where('created_at','<=',$request->end_date);
-        }    
+        }         
 
         return JsonResource::collection($builder->get()); 
        

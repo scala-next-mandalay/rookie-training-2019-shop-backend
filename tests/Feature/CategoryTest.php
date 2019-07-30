@@ -46,15 +46,15 @@ class CategoryTest extends TestCase
                 [
                     'id' => $exps[0]->id,
                     'name' => $exps[0]->name,
-                    'created_at' => $this->toMySqlDateFromJson($exps[0]->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($exps[0]->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($exps[0]->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($exps[0]->updated_at),
                     'deleted_at' => null,
                 ],
                 [
                     'id' => $exps[1]->id,
                     'name' => $exps[1]->name,
-                    'created_at' => $this->toMySqlDateFromJson($exps[1]->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($exps[1]->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($exps[1]->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($exps[1]->updated_at),
                     'deleted_at' => null,
                 ]
              ]

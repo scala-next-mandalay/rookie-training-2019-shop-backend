@@ -39,9 +39,7 @@ class OrderTest extends TestCase
      public function orders_everyone_can_get_rows()
      {
         $order =  factory(Order::class)->create();
-        //$item1 = factory(Item::class)->create();
-       
-         //$exps = factory(Orderitem::class, 2)->create(['order_id' => $order->id,'item_id' => $item1->id]);      
+        $order1=  factory(Order::class)->create();         
 
         $now = time();
         $res = $this->get('/api/orders');        
@@ -58,9 +56,22 @@ class OrderTest extends TestCase
                     'country'=>$order->country,
                     'state'=>$order->state,
                     'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->created_at),                    
-                ],         
+                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),                    
+                ], 
+                [
+                    'id'=>$order1->id,
+                    'total_price'=>$order1->total_price,
+                    'first_name'=>$order1->first_name,
+                    'last_name'=>$order1->last_name,
+                    'address1'=>$order1->address1,
+                    'address2'=>$order1->address2,
+                    'country'=>$order1->country,
+                    'state'=>$order1->state,
+                    'city'=>$order1->city,                  
+                    'created_at' => $this->toMySqlDateFromJson($order1->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order1->updated_at),  
+                ] ,       
             ]
         ]);
     }
@@ -70,9 +81,13 @@ class OrderTest extends TestCase
     public function get_begin_to_end_date_row()
     {         
           //$order =  factory(Order::class)->create();
-          $order = factory(Order::class)->create();
+          $order0 = factory(Order::class)->create(['created_at'=>'2019-07-23 00:00:00']);
+          $order = factory(Order::class)->create(['created_at'=>'2019-07-24 00:00:00']);
+          $order1 = factory(Order::class)->create(['created_at'=>'2019-07-25 00:00:00']);
+          $order2 = factory(Order::class)->create(['created_at'=>'2019-07-26 00:00:00']);
+
           echo "Begin date and end date ......";
-          $res = $this->json('GET','/api/orders?begin_date=20190724&&end_date=20190725');
+          $res = $this->json('GET','/api/orders?begin_date=20190724&end_date=20190725');
           $res->assertStatus(200); 
           $res->assertExactJson([
             'data' => [
@@ -86,9 +101,22 @@ class OrderTest extends TestCase
                     'country'=>$order->country,
                     'state'=>$order->state,
                     'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
                 ],
+                [
+                    'id'=>$order1->id,
+                    'total_price'=>$order1->total_price,
+                    'first_name'=>$order1->first_name,
+                    'last_name'=>$order1->last_name,
+                    'address1'=>$order1->address1,
+                    'address2'=>$order1->address2,
+                    'country'=>$order1->country,
+                    'state'=>$order1->state,
+                    'city'=>$order1->city,                  
+                    'created_at' => $this->toMySqlDateFromJson($order1->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order1->updated_at),     
+                ],                
             ]
           ]);
     }
@@ -96,8 +124,11 @@ class OrderTest extends TestCase
     /** @test */
     public function get_begin_date_row()
     {         
-          //$order =  factory(Order::class)->create();
-          $order = factory(Order::class)->create();
+          $order0 = factory(Order::class)->create(['created_at'=>'2019-07-23 00:00:00']);
+          $order = factory(Order::class)->create(['created_at'=>'2019-07-24 00:01:01']);
+          $order1 = factory(Order::class)->create(['created_at'=>'2019-07-25 00:00:00']);
+          $order2 = factory(Order::class)->create(['created_at'=>'2019-07-22 00:00:00']);
+
           echo "Begin date and end date ......";
           $res = $this->json('GET','/api/orders?begin_date=20190724');
           $res->assertStatus(200); 
@@ -113,9 +144,22 @@ class OrderTest extends TestCase
                     'country'=>$order->country,
                     'state'=>$order->state,
                     'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
                 ],
+                [
+                    'id'=>$order1->id,
+                    'total_price'=>$order1->total_price,
+                    'first_name'=>$order1->first_name,
+                    'last_name'=>$order1->last_name,
+                    'address1'=>$order1->address1,
+                    'address2'=>$order1->address2,
+                    'country'=>$order1->country,
+                    'state'=>$order1->state,
+                    'city'=>$order1->city,                  
+                    'created_at' => $this->toMySqlDateFromJson($order1->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order1->updated_at),     
+                ],                
             ]
           ]);
     }
@@ -123,10 +167,13 @@ class OrderTest extends TestCase
     /** @test */
     public function get_end_date_row()
     {         
-          //$order =  factory(Order::class)->create();
-          $order = factory(Order::class)->create();
+          $order0 = factory(Order::class)->create(['created_at'=>'2019-07-28 00:00:00']);
+          $order = factory(Order::class)->create(['created_at'=>'2019-07-25 00:01:01']);
+          $order1 = factory(Order::class)->create(['created_at'=>'2019-07-26 00:00:00']);
+          $order2 = factory(Order::class)->create(['created_at'=>'2019-07-27 00:01:01']);
+
           echo "Begin date and end date ......";
-          $res = $this->json('GET','/api/orders?end_date=20190725');
+          $res = $this->json('GET','/api/orders?end_date=20190726');
           $res->assertStatus(200); 
           $res->assertExactJson([
             'data' => [
@@ -140,22 +187,33 @@ class OrderTest extends TestCase
                     'country'=>$order->country,
                     'state'=>$order->state,
                     'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
                 ],
+                [
+                    'id'=>$order1->id,
+                    'total_price'=>$order1->total_price,
+                    'first_name'=>$order1->first_name,
+                    'last_name'=>$order1->last_name,
+                    'address1'=>$order1->address1,
+                    'address2'=>$order1->address2,
+                    'country'=>$order1->country,
+                    'state'=>$order1->state,
+                    'city'=>$order1->city,                  
+                    'created_at' => $this->toMySqlDateFromJson($order1->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order1->updated_at),     
+                ],                
             ]
           ]);
     }
 
     /** @test */
     public function get_extract_Orderitem_id_row()
-    {         
-          //$order =  factory(Order::class)->create();
-         //$orderitem=factory(Orderitem::class)->create();
-          $order = factory(Order::class)->create();
+    {    
+          $order = factory(Order::class)->create(['id'=>'1']);
+          $order1 = factory(Order::class)->create(['id'=>'2']);
 
-          echo "Begin date and end date ......";
-          $res = $this->json('GET','/api/orders?id=2');
+          $res = $this->json('GET','/api/orders?order_id=1');
           $res->assertStatus(200); 
           $res->assertExactJson([
             'data' => [
@@ -169,11 +227,11 @@ class OrderTest extends TestCase
                     'country'=>$order->country,
                     'state'=>$order->state,
                     'city'=>$order->city,                  
-                    'created_at' => $this->toMySqlDateFromJson($order->updated_at),
-                    'updated_at' => $this->toMySqlDateFromJson($order->created_at),
-                ],
+                    'created_at' => $this->toMySqlDateFromJson($order->created_at),
+                    'updated_at' => $this->toMySqlDateFromJson($order->updated_at),
+                ],                           
             ]
-          ]);
+          ]);           
     }    
 
      /** @test */
